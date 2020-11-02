@@ -1,83 +1,61 @@
-const myHeaders = new Headers();
-// const input = { description: "buy oatmeal", done: false };
-const raw = JSON.stringify({ description: "buy oatmeal", done: false });
+/*  
+(called after every postdata or delete/ update call)
+how to use cache and update per 5 seconds 
+watch video
+*/
 
-const requestPostUpdate = {
-    method: 'POST',
-    headers: { "Content-Type": "application/json" },
-    body: raw,
-    // body: JSON.stringify(input),
-    redirect: 'follow'
-};
+// variables
+const getBtnInput = document.querySelector('#submit-btn');
+const getTextInput = document.querySelector('#text-field');
+const getTaskList = document.querySelector('#task-list');
 
-const requestGetDelete = (VERB) => {
-    const setVerb = {
-        method: `${VERB}`,
-        headers: myHeaders,
-        redirect: 'follow'
-    };
-    return setVerb;
+//displays list of tasks
+const displayTasks = async () => {
+    const taskArray = await getData();
+    let listItem = ``;
+
+    taskArray.forEach(task => {
+        // const listItem = document.createElement("li");
+        // listItem.classList.add('list-item');
+        // listItem.textContent = `${task.description}`;
+        // getTaskList.appendChild(listItem);
+
+        /* note to instructor:
+        in de lessen werd mij geleerd om new elements op bovenstaand
+        manier te maken. maar ik vraag me af of onderstaand manier 
+        ook correct is? sinds het beknopter is om te schrijven?*/
+        listItem += `<li class="list-item">${task.description}
+        <i id="${task._id}" class="fas fa-edit"></i>
+        <i id="${task._id}" class="fas fa-trash-alt"></i></li>`;
+    });
+    getTaskList.innerHTML = listItem;
 }
 
-async function getData(VERB) {
-    try {
-        const response = await fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12`, requestGetDelete(VERB));
-        const data = await response.text();
-        console.log(data);
-    } catch (err) {
-        console.log(err);
+displayTasks();
+
+//stores and POST's userinput to API
+const getUserInput = () => {
+    const userInput = getTextInput.value;
+    const raw = JSON.stringify({ description: userInput, done: false });
+    postData(raw);
+}
+
+const getRandomFunc = () => {
+    getUserInput();
+    setTimeout(() => {
+        displayTasks();
+    }, 500);
+}
+
+//eventlisteners
+getBtnInput.addEventListener('click', () => {
+    if (getTextInput.value !== "") {
+        getRandomFunc();
     }
-}
+});
 
-async function deleteData(VERB, postId) {
-    try {
-        const response = await fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12/${postId}`, requestGetDelete(VERB));
-        const data = await response.text();
-        console.log(data);
-    } catch (err) {
-        console.log(err);
+getTextInput.addEventListener('keypress', (event) => {
+    if (event.keyCode === 13 && getTextInput.value !== "") {
+        getRandomFunc();
     }
-}
-
-async function updateData(VERB, postId) {
-    try {
-        const response = await fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12/${postId}`, requestGetDelete(VERB));
-        const data = await response.text();
-        console.log(data);
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-async function postData() {
-    try {
-        const response = await fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12/`, requestPostUpdate);
-        const data = await response.text();
-        console.log(data);
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-getData('GET');
-
-// async function deleteData(postId) {
-//     try {
-//         const response = await fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12/${postId}`, request('DELETE'));
-//         const data = await response.text();
-//         console.log(data);
-//     } catch (err) {
-//         console.log(err);
-//     }
-// }
-
-// async function getData() {
-//     try {
-//         const response = await fetch("https://jsonbox.io/box_ad91117cbbec078a7e12", request('GET'));
-//         const data = await response.text();
-//         console.log(data);
-//     } catch (err) {
-//         console.log(err);
-//     }
-// }
-
+});
