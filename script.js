@@ -1,11 +1,7 @@
-/* 
-taak doorstrepen */
-
 // global variables
 const getBtnInput = document.querySelector('#submit-btn');
 const getTextInput = document.querySelector('#text-field');
 const getTaskList = document.querySelector('#task-list');
-const temporaryplace = document.getElementById('temp');
 
 // creates and displays an existing list from api data 
 const displayTasks = async () => {
@@ -13,11 +9,18 @@ const displayTasks = async () => {
     //clears the DOM
     getTaskList.innerHTML = ``;
     taskArray.forEach(task => {
-        let listItem = `<li class="list-item"> 
-        <input type="checkbox" class="markAsDone" value="${task._id}">${task.description}
-        <i class="fas fa-edit ${task._id}"></i>
-        <i id="${task._id}" class="fas fa-trash-alt"></i></li>`;
-        getTaskList.innerHTML += listItem;
+        if (task.done) {
+            let listItem = `<li class="list-item"> 
+           ${task.description.strike()}
+            <i id="${task._id}" class="fas fa-trash-alt"></i></li>`;
+            getTaskList.innerHTML += listItem;
+        } else {
+            let listItem = `<li class="list-item"> 
+            <input type="checkbox" class="markAsDone" value="${task._id}">${task.description}
+            <i class="fas fa-edit ${task._id}"></i>
+            <i id="${task._id}" class="fas fa-trash-alt"></i></li>`;
+            getTaskList.innerHTML += listItem;
+        }
     });
 }
 
@@ -97,11 +100,31 @@ const updateTask = (clickEvent) => {
             <i id="${taskId}" class="fas fa-trash-alt"></i>`;
             listElement.innerHTML = newState;
 
+            //use original state pero make var that selscts sibling di edit icon
+            //i changes textconntent di e sibling element
+
             //this happens in background
             const raw = JSON.stringify({ description: userInput, done: false });
             updateData(taskId, raw);
         }
     });
+}
+
+const markAsDone = (task) => {
+    const listItem = task.target.parentElement;
+    const taskId = task.target.value;
+    const isChecked = task.target.checked; // returns true or false
+    const str = listItem.textContent;
+    const newStr = str.strike();
+    const striked = `${newStr}
+    <i id="${taskId}" class="fas fa-trash-alt"></i>`;
+
+    if (isChecked) {
+        listItem.innerHTML = striked;
+        const raw = JSON.stringify({ description: str, done: true });
+        updateData(taskId, raw);
+    }
+
 }
 
 //eventlisteners
@@ -129,17 +152,9 @@ document.body.addEventListener('click', (event) => {
     };
 });
 
-/*
-if checkbox is clicked addeventlistener change
-onchange calls function markAsDone
-markasdone ta check if (checkbox ta checked)
-finds caller list element (parentnode di e checkbox)
-store listelement su textcontent den un var
-list element. textcontent = strikethrough frontend
-set raw as stored texcontent, i done: true
-backend call updatedata pass in id di caller element i raw
-
-update displaytasks() if (task.done == true) textcontent is strikethrough
-
-
-*/
+document.body.addEventListener('change', (event) => {
+    //if checkbox is checked
+    if (event.target.classList.contains("markAsDone")) {
+        markAsDone(event);
+    };
+});
