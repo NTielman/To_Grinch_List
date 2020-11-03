@@ -1,61 +1,95 @@
-/*  
-(called after every postdata or delete/ update call)
-how to use cache and update per 5 seconds 
-watch video
-*/
+/* update tekst btn
+taak doorstrepen */
 
-// variables
+// global variables
 const getBtnInput = document.querySelector('#submit-btn');
 const getTextInput = document.querySelector('#text-field');
 const getTaskList = document.querySelector('#task-list');
 
-//displays list of tasks
+// creates and displays existing list from api data 
 const displayTasks = async () => {
     const taskArray = await getData();
-    let listItem = ``;
-
+    //clears the DOM
+    getTaskList.innerHTML = ``;
     taskArray.forEach(task => {
-        // const listItem = document.createElement("li");
-        // listItem.classList.add('list-item');
-        // listItem.textContent = `${task.description}`;
-        // getTaskList.appendChild(listItem);
-
-        /* note to instructor:
-        in de lessen werd mij geleerd om new elements op bovenstaand
-        manier te maken. maar ik vraag me af of onderstaand manier 
-        ook correct is? sinds het beknopter is om te schrijven?*/
-        listItem += `<li class="list-item">${task.description}
-        <i id="${task._id}" class="fas fa-edit"></i>
+        let listItem = `<li class="list-item"> 
+        <input type="checkbox" class="markAsDone" value="${task._id}">${task.description}
+        <i class="fas fa-edit ${task._id}"></i>
         <i id="${task._id}" class="fas fa-trash-alt"></i></li>`;
+        getTaskList.innerHTML += listItem;
     });
-    getTaskList.innerHTML = listItem;
 }
 
-displayTasks();
+displayTasks(); //displays initial list 
 
-//stores and POST's userinput to API
-const getUserInput = () => {
+//dynamically creates list element from user-input 
+const createListItem = (task) => {
+
+    if (typeof task === 'object') {
+        //remove temporary item
+        getTaskList.removeChild(getTaskList.children[0]);
+        const listItem = `<li class="list-item"> 
+        <input type="checkbox" class="markAsDone" value="${task._id}">${task.description}
+        <i class="fas fa-edit ${task._id}"></i>
+        <i id="${task._id}" class="fas fa-trash-alt"></i></li>`;
+        getTaskList.innerHTML = listItem + getTaskList.innerHTML;
+
+    } else {
+        const temporaryItem = `<li class="list-item"> 
+        <input type="checkbox" class="markAsDone">${task}
+        <i class="fas fa-edit"></i>
+        <i class="fas fa-trash-alt"></i></li>`;
+        getTaskList.innerHTML = temporaryItem + getTaskList.innerHTML;
+    }
+}
+
+const removeTask = (task) => {
+    //this happens in realtime
+    const listItem = task.target.parentElement;
+    listItem.parentNode.removeChild(listItem);
+    // this happens in background
+    const taskId = task.target.id;
+    deleteData(taskId);
+}
+
+const createTask = async () => {
+    //this happens in realtime
     const userInput = getTextInput.value;
+    createListItem(userInput);
+    getTextInput.value = '';
+    //this happens in background
     const raw = JSON.stringify({ description: userInput, done: false });
-    postData(raw);
+    const getTaskId = await postData(raw);
+
+    // if api returned post_id, update task html in background
+    if (getTaskId) {
+        createListItem(getTaskId);
+    }
 }
 
-const getRandomFunc = () => {
-    getUserInput();
-    setTimeout(() => {
-        displayTasks();
-    }, 500);
+const updateTask = (task) => {
+    console.log(task);
 }
 
 //eventlisteners
 getBtnInput.addEventListener('click', () => {
     if (getTextInput.value !== "") {
-        getRandomFunc();
+        createTask();
     }
 });
 
 getTextInput.addEventListener('keypress', (event) => {
     if (event.keyCode === 13 && getTextInput.value !== "") {
-        getRandomFunc();
+        createTask();
     }
+});
+
+document.body.addEventListener('click', (event) => {
+    //if trash icon is clicked
+    if (event.target.className === "fas fa-trash-alt") {
+        removeTask(event);
+    };
+    if (event.target.className === "fas fa-edit") {
+        updateTask(event);
+    };
 });
