@@ -34,11 +34,9 @@ async function deleteData(postId) {
         console.log(err);
     }
 }
-async function updateData(postId) {
+async function updateData(postId, raw) {
     try {
-        const response = await fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12/${postId}`, requestPostUpdate('PUT'));
-        const data = await response.text();
-        console.log(data);
+        const response = await fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12/${postId}`, requestPostUpdate('PUT', raw));
     } catch (err) {
         console.log(err);
     }
