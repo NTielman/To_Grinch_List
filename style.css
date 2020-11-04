@@ -1,0 +1,165 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(223, 223, 223);
+    font-family: Lato, Verdana, Tahoma, sans-serif;
+}
+
+.box-container {
+    background-color: white;
+    width: 600px;
+    height: auto;
+    margin: 90px auto 0;
+    border-radius: 10px;
+}
+
+header {
+    height: 150px;
+    width: 100%;
+    padding: 20px;
+    border-radius: 10px 10px 0px 0px;
+    color: white;
+    text-align: center;
+    /* display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end; */
+    background-color: midnightblue;
+}
+
+h1 {
+    font-size: 50px;
+}
+
+.date {
+    align-self: flex-end;
+}
+
+.add-task-container {
+    height: 60px;
+    display: flex;
+}
+
+#update, 
+#add-task-field {
+    width: 80%;
+    border: none;
+    background-color: rgb(69, 69, 83);
+    padding: 20px;
+    font-size: 20px;
+    color: white;
+    outline: none;
+}
+
+::placeholder {
+    color: rgb(178, 179, 196);
+  }
+
+.btn {
+    cursor: pointer;
+    border: none;
+    color: white;
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+    outline: none;
+}  
+
+.add-task-btn:hover {
+    background-color: teal;
+}
+
+.add-task-btn {
+    width: 20%;
+    background-color: rgb(0, 192, 196);
+}
+
+#task-list {
+    list-style: none;
+    padding-bottom: 20px;
+}
+
+/* Style the list items */
+.list-item {
+    width: 100%;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 20px;
+    border-bottom: 1px solid rgb(231, 231, 255);
+}
+
+/* When clicked on strike out text */
+/* .list-item.checked {
+    text-decoration: line-through;
+    opacity: 0.5;
+  } */
+ /* classlist.toggle('checked') */
+  /* 
+ul li input[type=text] {
+    display:none;
+  }
+  
+  ul li.editMode input[type=text] {
+    display:block;
+  }
+  
+  ul li.editMode label {
+    display:none;
+  } */
+
+.markAsDone {
+    /* margin: 20px; */
+    margin-right: 20px;
+}
+
+strike {
+    color: rgba(69, 69, 83, 0.5);
+}
+.btns-container {
+    float: right;
+    /* width: 60px;
+    margin: 20px;
+    display: flex;
+    justify-content: space-evenly; */
+}
+.fa-trash-alt,
+.fa-edit {
+    margin-left: 20px;
+}
+
+.fa-edit:hover {
+    color: rgb(0, 192, 196);
+}
+
+.fa-trash-alt:hover {
+    color: red;
+}
+
+.save-btn {
+    background-color: turquoise;
+}
+.cancel-btn {
+    background-color: tomato;
+}
+
+.save-btn:hover {
+    background-color: rgb(19, 66, 62);
+}
+.cancel-btn:hover {
+    background-color: rgb(80, 29, 20);
+}
+
+ .update-btns {
+    float: right;
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+}
+
+/* DELETING THE TASKS */
+/* .fall{
+    transform: translateY(4rem) scale(0.4) rotateZ(20deg);
+    opacity: 0;
+} */

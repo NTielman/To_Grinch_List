@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do list</title>
+    <title>To Grinch List</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.1/css/all.css">
     <script defer src="api-client.js"></script>
@@ -12,21 +12,24 @@
 </head>
 
 <body>
-    <header>
-        <h1>ToDo List</h1>
-    </header>
-    <div>
-        <input type="text" placeholder="New Task" id="text-field">
-        <input type="submit" value="Add Task" id="submit-btn">
-    </div>
-    <main>
-        <div>
-            <ul id="task-list">
-
-            </ul>
+    <div class="box-container">
+        <!-------------------------------- Header & Title ------------------------------->
+        <header>
+            <h1>To Grinch List</h1>
+        </header>
+        <!---------------------- Input field for adding new tasks ----------------------->
+        <div class="add-task-container">
+            <input type="text" placeholder="Enter a task" id="add-task-field">
+            <input type="submit" value="Add Task" class="btn add-task-btn">
         </div>
-    </main>
-
+        <!------------ Container for displaying list of tasks added with JS ------------->
+        <main>
+            <div class="task-list-container">
+                <ul id="task-list">
+                </ul>
+            </div>
+        </main>
+    </div>
 </body>
 
 </html>
