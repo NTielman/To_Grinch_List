@@ -1,6 +1,6 @@
 const myHeaders = new Headers();
 
-const requestPostUpdate = (VERB, raw) => {
+const PostPutRequest = (VERB, raw) => {
     const setVerb = {
         method: `${VERB}`,
         headers: { "Content-Type": "application/json" },
@@ -9,7 +9,7 @@ const requestPostUpdate = (VERB, raw) => {
     };
     return setVerb;
 }
-const requestGetDelete = (VERB) => {
+const GetDeleteRequest = (VERB) => {
     const setVerb = {
         method: `${VERB}`,
         headers: myHeaders,
@@ -20,7 +20,7 @@ const requestGetDelete = (VERB) => {
 
 async function getData() {
     try {
-        const response = await fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12`, requestGetDelete('GET'));
+        const response = await fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12`, GetDeleteRequest('GET'));
         const data = await response.json();
         return data;
     } catch (err) {
@@ -29,21 +29,21 @@ async function getData() {
 }
 async function deleteData(postId) {
     try {
-        fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12/${postId}`, requestGetDelete('DELETE'));
+        await fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12/${postId}`, GetDeleteRequest('DELETE'));
     } catch (err) {
         console.log(err);
     }
 }
 async function updateData(postId, raw) {
     try {
-        const response = await fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12/${postId}`, requestPostUpdate('PUT', raw));
+        await fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12/${postId}`, PostPutRequest('PUT', raw));
     } catch (err) {
         console.log(err);
     }
 }
 async function postData(raw) {
     try {
-        const response = await fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12`, requestPostUpdate('POST', raw));
+        const response = await fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12`, PostPutRequest('POST', raw));
         const data = await response.json();
         return data;
     } catch (err) {
