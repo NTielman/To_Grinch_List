@@ -1,284 +1,171 @@
-// global variables
+// ----------------------- global variables ------------------------- 
 const getAddBtn = document.querySelector('.add-task-btn');
 const getTextInput = document.querySelector('#add-task-field');
 const getTaskList = document.querySelector('#task-list');
 
-// creates and displays an existing list from api data 
-const displayTasks = async () => {
-    const taskArray = await getData();
-    //clears the DOM
-    getTaskList.innerHTML = ``;
-    taskArray.forEach(task => {
-        if (task.done) {
-            //  <li class="checked">Pay bills</li>
-            let listItem = `<li class="list-item"> 
-           ${task.description.strike()}
-            <i id="${task._id}" class="fas fa-trash-alt"></i></li>`;
-            getTaskList.innerHTML += listItem;
-        } else { // add div to below functions
-            let listItem = `<li class="list-item"> 
-            <input type="checkbox" class="markAsDone" value="${task._id}">${task.description}
-            <div class="btns-container">
-            <i class="fas fa-edit ${task._id}"></i>
-            <i id="${task._id}" class="fas fa-trash-alt"></i>
-            </div></li>`;
-            getTaskList.innerHTML += listItem;
-        }
-    });
-}
+// -------------------------- functions -----------------------------
 
-displayTasks(); //displays initial list 
-//function that creates listitems
-//<input type="checkbox" checked></input>
-// ipv textnode por make e text un <label> of <p> easier to select and change it
-// Create a "close" button and append it to each list item
-// var myNodelist = document.getElementsByTagName("LI");
-// var i;
-// for (i = 0; i < myNodelist.length; i++) {
-//   var span = document.createElement("SPAN");
-//   var txt = document.createTextNode("\u00D7");
-//   span.className = "close";
-//   span.appendChild(txt);
-//   myNodelist[i].appendChild(span);
-// }
+//creates HTML list elements
+const createListItem = (taskObj) => {
 
-// Add a "checked" symbol when clicking on a list item
-// var list = document.querySelector('ul');
-// list.addEventListener('click', function(ev) {
-//   if (ev.target.tagName === 'LI') {
-//     ev.target.classList.toggle('checked');
-//   }
-// }, false);
+    //create elements
+    const listItem = document.createElement('li');
+    const checkBox = document.createElement('input');
+    const text = document.createElement('label');
+    const btnsContainer = document.createElement('div');
+    const editIcon = document.createElement('i');
+    const trashIcon = document.createElement('i');
 
-// Create a new list item when clicking on the "Add" button
-// function newElement() {
-//     var li = document.createElement("li");
-//     var inputValue = document.getElementById("myInput").value;
-//     var t = document.createTextNode(inputValue);
-//     li.appendChild(t);
-//     if (inputValue === '') {
-//       alert("You must write something!");
-//     } else {
-//       document.getElementById("myUL").appendChild(li);
-//     }
-//     document.getElementById("myInput").value = "";
-
-//     var span = document.createElement("SPAN");
-//     var txt = document.createTextNode("\u00D7");
-//     span.className = "close";
-//     span.appendChild(txt);
-//     li.appendChild(span);
-
-//     for (i = 0; i < close.length; i++) {
-//       close[i].onclick = function() {
-//         var div = this.parentElement;
-//         div.style.display = "none";
-//       }
-//     }
-//   }
-
-//New task list item
-/*var createNewTaskElement=function(taskString){
-
-    var listItem=document.createElement("li");
-
-    //input (checkbox)
-    var checkBox=document.createElement("input");//checkbx
-    //label
-    var label=document.createElement("label");//label
-    //input (text)
-    var editInput=document.createElement("input");//text
-    //button.edit
-    var editButton=document.createElement("button");//edit button
-
-    //button.delete
-    var deleteButton=document.createElement("button");//delete button
-
-    label.innerText=taskString;
-
-    //Each elements, needs appending
-    checkBox.type="checkbox";
-    editInput.type="text";
-
-    editButton.innerText="Edit";//innerText encodes special characters, HTML does not.
-    editButton.className="edit";
-    deleteButton.innerText="Delete";
-    deleteButton.className="delete";
-
-
-
-    //and appending.
-    listItem.appendChild(checkBox);
-    listItem.appendChild(label);
-    listItem.appendChild(editInput);
-    listItem.appendChild(editButton);
-    listItem.appendChild(deleteButton);
-    return listItem;
-}*/
-
-/*var addTask=function(){
-    console.log("Add Task...");
-    //Create a new list item with the text from the #new-task:
-    var listItem=createNewTaskElement(taskInput.value);
-
-    //Append listItem to incompleteTaskHolder
-    incompleteTaskHolder.appendChild(listItem);
-    bindTaskEvents(listItem, taskCompleted);
-
-    taskInput.value="";
-
-} */
-
-//creates list element from user-input 
-const createListItem = (task) => {
-
-    if (typeof task === 'object') {
-        //remove temporary item
-        getTaskList.removeChild(getTaskList.children[0]);
-        const listItem = `<li class="list-item"> 
-        <input type="checkbox" class="markAsDone" value="${task._id}">${task.description}
-        <i class="fas fa-edit ${task._id}"></i>
-        <i id="${task._id}" class="fas fa-trash-alt"></i></li>`;
-        getTaskList.innerHTML = listItem + getTaskList.innerHTML;
-
-    } else {
-        const temporaryItem = `<li class="list-item"> 
-        <input type="checkbox" class="markAsDone">${task}
-        <i class="fas fa-edit"></i>
-        <i class="fas fa-trash-alt"></i></li>`;
-        getTaskList.innerHTML = temporaryItem + getTaskList.innerHTML;
+    //add attributes
+    listItem.className = "list-item";
+    checkBox.type = "checkbox";
+    checkBox.className = "markAsDone";
+    checkBox.value = taskObj._id;
+    checkBox.id = taskObj._id;
+    if (taskObj.done) {
+        checkBox.checked = true;
+        listItem.classList.add('checked');
     }
+    text.innerText = taskObj.description;
+    text.htmlFor = taskObj._id;
+    btnsContainer.className = "btns-container";
+    editIcon.className = `fas fa-edit ${taskObj._id}`;
+    trashIcon.className = "fas fa-trash-alt";
+    trashIcon.id = taskObj._id;
+
+    // append children
+    listItem.appendChild(checkBox);
+    listItem.appendChild(text);
+    btnsContainer.appendChild(editIcon);
+    btnsContainer.appendChild(trashIcon);
+    listItem.appendChild(btnsContainer);
+
+    return listItem;
+
 }
 
-/*function deleteCheck(e) {
-    const item = e.target;
-    //DELETE ITEM
-    if (item.classList[0] === "delete_btn") {
-        const todo = item.parentElement;
-        //ANIMATION TRANSITION
-        todo.classList.add("fall")
-        todo.addEventListener('transitionend', function () {
-            todo.remove()
-        })
-    } */
+//displays an existing list (if available) from api data 
+const displayTasks = async () => {
 
-const removeTask = (task) => {
-    //this happens in realtime
-    const listItem = task.target.parentElement;
+    const taskArray = await getData();
+
+    taskArray.forEach(taskObj => {
+        const listItem = createListItem(taskObj);
+        getTaskList.appendChild(listItem);
+    });
+
+}
+
+//displays initial list 
+displayTasks();
+
+const removeTask = (trashTarget) => {
+
+    //realtime: removes tasknode
+    const listItem = trashTarget.target.parentElement.parentElement;
     listItem.parentNode.removeChild(listItem);
-    // this happens in background
-    const taskId = task.target.id;
+
+    //in background: sends DELETE request to api
+    const taskId = trashTarget.target.id;
     deleteData(taskId);
+
 }
 
 const createTask = async () => {
-    //this happens in realtime
+
+    //realtime: creates temporary taskObj to display to DOM
     const userInput = getTextInput.value;
-    createListItem(userInput);
+    const tempTaskObj = {
+        description: userInput,
+        done: false,
+        _id: "undefined"
+    };
+    const tempListItem = createListItem(tempTaskObj);
+    //add to DOM
+    getTaskList.insertBefore(tempListItem, getTaskList.children[0])
+    //reset inputfield
     getTextInput.value = '';
-    //this happens in background
+
+    //in background: send POST request, await response
     const raw = JSON.stringify({ description: userInput, done: false });
     const getTaskId = await postData(raw);
-
-    // if api returned post_id, update task html in background
-    if (getTaskId) {
-        createListItem(getTaskId);
+    //if api has returned response, update task_id (html)
+    if (typeof getTaskId === 'object') {
+        const newListItem = createListItem(getTaskId);
+        getTaskList.replaceChild(newListItem, getTaskList.children[0]);
     }
+
 }
 
-/*//Edit an existing task.
+const editTask = (editTarget) => {
 
-var editTask=function(){
-console.log("Edit Task...");
-console.log("Change 'edit' to 'save'");
-
-
-var listItem=this.parentNode;
-
-var editInput=listItem.querySelector('input[type=text]');
-var label=listItem.querySelector("label");
-var containsClass=listItem.classList.contains("editMode");
-        //If class of the parent is .editmode
-        if(containsClass){
-
-        //switch to .editmode
-        //label becomes the inputs value.
-            label.innerText=editInput.value;
-        }else{
-            editInput.value=label.innerText;
-        }
-
-        //toggle .editmode on the parent.
-        listItem.classList.toggle("editMode");
-}
- */
-
-/*  if (item.classList[0] === "complete_btn") {
-       const todo = item.parentElement;
-       todo.classList.toggle("completedItem")
-   } */
-
-const updateTask = (clickEvent) => {
-    const taskId = clickEvent.target.classList[2];
-    //adjusted for adding div
-    const listElement = clickEvent.target.parentElement.parentElement;
-
-    //make a copy of old state
+    //make copy of state before edits
+    const taskId = editTarget.target.classList[2];
+    const listElement = editTarget.target.parentElement.parentElement;
     const originalState = listElement.innerHTML;
+    const isChecked = listElement.children[0].checked;
 
-    //create new inputfield
-    const newInputField = `<input type="text" placeholder="${listElement.textContent}" id="update">
-    <div class="update-btns">
+    //create new (temporary) inputfield and buttons
+    const newInputField = `<input type="text" 
+    placeholder="${listElement.textContent}" id="edit-inputfield">
+    <div class="edit-btns-container">
     <input type="submit" value="Save" class="btn save-btn">
     <input type="submit" value="Cancel" class="btn cancel-btn">
     </div>`;
     listElement.innerHTML = newInputField;
 
-    const getNewInputField = document.querySelector('#update');
+    //add eventlisteners to new btns
+    const getEditInput = document.querySelector('#edit-inputfield');
     const saveBtn = document.querySelector('.save-btn');
     const cancelBtn = document.querySelector('.cancel-btn');
 
-    //btn eventlisteners
+    //if "cancel" is clicked revert to original state
     cancelBtn.addEventListener('click', () => {
         listElement.innerHTML = originalState;
     });
-    saveBtn.addEventListener('click', () => {
-        if (getNewInputField.value !== "") {
-            const userInput = getNewInputField.value;
-            const newState = `<input type="checkbox" class="markAsDone" value="${taskId}">${userInput}
-            <i class="fas fa-edit ${taskId}"></i>
-            <i id="${taskId}" class="fas fa-trash-alt"></i>`;
-            listElement.innerHTML = newState;
 
-            //this happens in background
-            const raw = JSON.stringify({ description: userInput, done: false });
+    //if "save" is clicked update the listItem
+    saveBtn.addEventListener('click', () => {
+        if (getEditInput.value !== "") {
+            const userInput = getEditInput.value;
+            const updatedTaskObj = {
+                description: userInput,
+                done: isChecked,
+                _id: taskId
+            };
+
+            //realtime: replace old listItem with new one
+            const newListElement = createListItem(updatedTaskObj);
+            getTaskList.replaceChild(newListElement, listElement);
+
+            //in background: send PUT request to api
+            const raw = JSON.stringify({ description: userInput, done: isChecked });
             updateData(taskId, raw);
         }
     });
-}
-
-const markAsDone = (task) => {
-    const listItem = task.target.parentElement;
-    const taskId = task.target.value;
-    const isChecked = task.target.checked; // returns true or false
-    const str = listItem.textContent;
-    const newStr = str.strike();
-    const striked = `${newStr}
-    <i id="${taskId}" class="fas fa-trash-alt"></i>`;
-
-    if (isChecked) {
-        listItem.innerHTML = striked;
-        const raw = JSON.stringify({ description: str, done: true });
-        updateData(taskId, raw);
-    }
 
 }
 
-//eventlisteners
+const markAsDone = (chkBoxTarget) => {
+
+    const checkBox = chkBoxTarget.target;
+    const listItem = checkBox.parentElement;
+    const taskId = checkBox.value;
+    const isChecked = checkBox.checked;
+    const taskDescr = checkBox.nextElementSibling.innerText;
+
+    //realtime: strikethrough text in CSS
+    listItem.classList.toggle('checked');
+    //in background: PUT request update task.done
+    const raw = JSON.stringify({ description: taskDescr, done: isChecked });
+    updateData(taskId, raw);
+
+}
+
+// ------------------------ eventlisteners --------------------------
 getAddBtn.addEventListener('click', () => {
     if (getTextInput.value !== "") {
         createTask();
-        //createTask(); pass in userinput value mesora?
     }
 });
 
@@ -296,12 +183,12 @@ document.body.addEventListener('click', (event) => {
 
     //if edit icon is clicked
     if (event.target.classList.contains("fa-edit")) {
-        updateTask(event);
+        editTask(event);
     };
 });
 
 document.body.addEventListener('change', (event) => {
-    //if checkbox is checked
+    //if checkbox gets checked or unchecked
     if (event.target.classList.contains("markAsDone")) {
         markAsDone(event);
     };

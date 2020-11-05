@@ -43,7 +43,7 @@ h1 {
     display: flex;
 }
 
-#update, 
+#edit-inputfield, 
 #add-task-field {
     width: 80%;
     border: none;
@@ -91,13 +91,12 @@ h1 {
 }
 
 /* When clicked on strike out text */
-/* .list-item.checked {
+.checked {
     text-decoration: line-through;
     opacity: 0.5;
-  } */
- /* classlist.toggle('checked') */
-  /* 
-ul li input[type=text] {
+}
+
+/* ul li input[type=text] {
     display:none;
   }
   
@@ -107,16 +106,13 @@ ul li input[type=text] {
   
   ul li.editMode label {
     display:none;
-  } */
+  } */ 
 
 .markAsDone {
     /* margin: 20px; */
     margin-right: 20px;
 }
 
-strike {
-    color: rgba(69, 69, 83, 0.5);
-}
 .btns-container {
     float: right;
     /* width: 60px;
@@ -151,15 +147,9 @@ strike {
     background-color: rgb(80, 29, 20);
 }
 
- .update-btns {
+ .edit-btns-container {
     float: right;
     display: flex;
     flex-direction: column;
     width: 20%;
 }
-
-/* DELETING THE TASKS */
-/* .fall{
-    transform: translateY(4rem) scale(0.4) rotateZ(20deg);
-    opacity: 0;
-} */
