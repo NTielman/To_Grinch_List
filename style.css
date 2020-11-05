@@ -1,43 +1,53 @@
+/* reset universal styling */
 * {
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
 }
 
+html {
+    width: 100%;
+    height: 100vh;
+}
+
+/* background styling */
 body {
-    background-color: rgb(223, 223, 223);
-    font-family: Lato, Verdana, Tahoma, sans-serif;
+    background-size: cover;
+    background-blend-mode: overlay;
+    background-image: url(https://deswal.ru/newyear/1600-1200/00000456.jpg);
+    background-color: rgb(0, 54, 12);
 }
 
 .box-container {
-    background-color: white;
+    background-color: rgb(245, 255, 155);
     width: 600px;
     height: auto;
-    margin: 90px auto 0;
-    border-radius: 10px;
+    margin: 80px auto 0;
+    border-radius: 20px;
+    box-shadow: 2px -3px 8px rgba(0, 185, 0, 0.5),
+    -4px 2px 8px rgba(0, 185, 0, 0.5);
 }
 
+/* header styling */
 header {
-    height: 150px;
+    height: 180px;
     width: 100%;
     padding: 20px;
-    border-radius: 10px 10px 0px 0px;
-    color: white;
+    border-radius: 20px 20px 0px 0px;
+    color: rgb(232, 255, 227);
+    background-color: rgb(12, 90, 44) ;
     text-align: center;
-    /* display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end; */
-    background-color: midnightblue;
+    background-image: url(https://www.teahub.io/photos/full/56-569356_how-the-grinch-stole-christmas-image-data-src.jpg);
+    background-position: -645px -190px;
+    background-blend-mode: overlay;
+    font-family: 'Henny Penny', cursive;
 }
 
 h1 {
-    font-size: 50px;
+    font-size: 52px;
 }
 
-.date {
-    align-self: flex-end;
-}
-
+/* input field */
 .add-task-container {
     height: 60px;
     display: flex;
@@ -47,109 +57,130 @@ h1 {
 #add-task-field {
     width: 80%;
     border: none;
-    background-color: rgb(69, 69, 83);
-    padding: 20px;
-    font-size: 20px;
-    color: white;
+    background-color: rgb(69, 83, 73);
+    padding: 10px 30px;
+    font-size: 24px;
+    color: rgb(232, 255, 227);
     outline: none;
+    font-family: 'Architects Daughter', cursive;
 }
 
 ::placeholder {
-    color: rgb(178, 179, 196);
-  }
+    color: rgb(178, 196, 183);
+    font-family: 'Architects Daughter', cursive;
+}
 
+  /* buttons styling */
 .btn {
     cursor: pointer;
     border: none;
-    color: white;
-    font-size: 20px;
+    color: rgb(232, 255, 227);
     transition: background-color 0.3s ease;
     outline: none;
+    font-family: 'Henny Penny', cursive;
 }  
-
-.add-task-btn:hover {
-    background-color: teal;
-}
 
 .add-task-btn {
     width: 20%;
-    background-color: rgb(0, 192, 196);
+    font-size: 20px;
+    background-color: rgb(122, 228, 0);
 }
 
+.add-task-btn:hover {
+    background-color: rgb(0, 228, 68);
+}
+
+/* Style the list items */
 #task-list {
     list-style: none;
     padding-bottom: 20px;
 }
 
-/* Style the list items */
 .list-item {
+    font-family: 'Architects Daughter', cursive;
     width: 100%;
+    font-size: 20px;
+    height: 70px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgb(97, 145, 58);;
+}
+
+/* checkbox */
+.markAsDone {
     cursor: pointer;
-    font-size: 18px;
-    padding: 20px;
-    border-bottom: 1px solid rgb(231, 231, 255);
+    margin: 0px 30px;
+}
+
+/* When clicked on gray out items */
+.checked {
+    color:rgba(69, 83, 73, 0.5);
 }
 
 /* When clicked on strike out text */
-.checked {
+.checked label {
     text-decoration: line-through;
-    opacity: 0.5;
 }
 
-/* ul li input[type=text] {
-    display:none;
-  }
-  
-  ul li.editMode input[type=text] {
-    display:block;
-  }
-  
-  ul li.editMode label {
-    display:none;
-  } */ 
-
-.markAsDone {
-    /* margin: 20px; */
-    margin-right: 20px;
+label {
+    cursor: pointer;
+    margin-right: 30px;
+    width: 65%;
 }
 
+/* styling "edit" and "trash" icons */
 .btns-container {
-    float: right;
-    /* width: 60px;
-    margin: 20px;
+    width: 20%;
     display: flex;
-    justify-content: space-evenly; */
+    justify-content: space-around;
 }
+
 .fa-trash-alt,
 .fa-edit {
-    margin-left: 20px;
+    cursor: pointer;
+    transition: color ease 0.3s;
 }
 
 .fa-edit:hover {
-    color: rgb(0, 192, 196);
+    color: rgb(122, 228, 0);
 }
 
 .fa-trash-alt:hover {
-    color: red;
+    color:  rgb(255, 0, 55);
 }
 
-.save-btn {
-    background-color: turquoise;
-}
-.cancel-btn {
-    background-color: tomato;
+/* styling the hidden/dynamic "edit-inputfield" */
+#edit-inputfield {
+    height: inherit;
 }
 
-.save-btn:hover {
-    background-color: rgb(19, 66, 62);
-}
-.cancel-btn:hover {
-    background-color: rgb(80, 29, 20);
-}
-
- .edit-btns-container {
-    float: right;
+.edit-btns-container {
     display: flex;
     flex-direction: column;
     width: 20%;
+    height: inherit;
+}
+
+.save-btn,
+.cancel-btn {
+    height: 50%;
+    transition: background-color ease 0.3s;
+}
+
+.save-btn {
+    background-color:  rgb(122, 228, 0);
+}
+
+.cancel-btn {
+    background-color: rgb(255, 0, 55);
+}
+
+.save-btn:hover {
+    background-color: rgb(0, 228, 68);
+}
+
+.cancel-btn:hover {
+    background-color: crimson;
 }

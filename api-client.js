@@ -1,3 +1,4 @@
+// ----------------------- request options ------------------------- 
 const myHeaders = new Headers();
 
 const PostPutRequest = (VERB, raw) => {
@@ -9,6 +10,7 @@ const PostPutRequest = (VERB, raw) => {
     };
     return setVerb;
 }
+
 const GetDeleteRequest = (VERB) => {
     const setVerb = {
         method: `${VERB}`,
@@ -18,6 +20,7 @@ const GetDeleteRequest = (VERB) => {
     return setVerb;
 }
 
+// ----------------------- api-request functions ------------------------- 
 async function getData() {
     try {
         const response = await fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12`, GetDeleteRequest('GET'));
@@ -27,6 +30,7 @@ async function getData() {
         console.log(err);
     }
 }
+
 async function deleteData(postId) {
     try {
         await fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12/${postId}`, GetDeleteRequest('DELETE'));
@@ -34,6 +38,7 @@ async function deleteData(postId) {
         console.log(err);
     }
 }
+
 async function updateData(postId, raw) {
     try {
         await fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12/${postId}`, PostPutRequest('PUT', raw));
@@ -41,6 +46,7 @@ async function updateData(postId, raw) {
         console.log(err);
     }
 }
+
 async function postData(raw) {
     try {
         const response = await fetch(`https://jsonbox.io/box_ad91117cbbec078a7e12`, PostPutRequest('POST', raw));
