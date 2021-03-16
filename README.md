@@ -21,7 +21,10 @@ A Grinch-themed To-Do list
 
 
 ## Screenshots
-![alt text](https://github.com/NTielman/To_Grinch_List/blob/main/to_grinch_list_preview.png "ToDo list Preview image")
+![alt text](https://github.com/NTielman/To_Grinch_List/blob/main/preview%20images/to_grinch_preview.png "ToDo list Preview image")
+
+editing a task
+![alt text](https://github.com/NTielman/To_Grinch_List/blob/main/preview%20images/to_grinch_list_preview1.png "Edit task Preview image")
 
 
 ## Usage & Details 
